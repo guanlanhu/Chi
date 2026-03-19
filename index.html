@@ -80,52 +80,26 @@
       position: relative;
     }
 
-    .drop-zone {
-      padding: 2rem 1rem;
-    }
+    .drop-zone { padding: 2rem 1rem; }
+    .barcode-zone { padding: 1.5rem 1rem; margin-bottom: 1rem; }
 
-    .barcode-zone {
-      padding: 1.5rem 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .drop-zone:hover,
-    .drop-zone.drag-over,
-    .barcode-zone:hover {
+    .drop-zone:hover, .drop-zone.drag-over, .barcode-zone:hover {
       border-color: var(--accent);
       background: var(--accent-light);
     }
 
-    .drop-zone input[type=file],
-    .barcode-zone input[type=file] {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
+    .drop-zone input[type=file], .barcode-zone input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
     }
 
-    .drop-zone .icon,
-    .barcode-zone .icon {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 0.5rem;
+    .drop-zone .icon, .barcode-zone .icon {
+      display: flex; justify-content: center; align-items: center; margin-bottom: 0.5rem;
     }
 
-    .drop-zone p,
-    .barcode-zone p {
-      font-size: 1.05rem;
-      color: var(--muted);
-    }
+    .drop-zone p, .barcode-zone p { font-size: 1.05rem; color: var(--muted); }
 
-    .drop-zone strong,
-    .barcode-zone strong,
-    .field label {
-      color: var(--accent);
-      font-weight: 500;
-      font-size: 1.05rem;
+    .drop-zone strong, .barcode-zone strong, .field label {
+      color: var(--accent); font-weight: 500; font-size: 1.05rem;
     }
 
     .upload-icon {
@@ -143,129 +117,64 @@
     }
 
     .plate-icon {
-      width: 48px;
-      height: 48px;
+      width: 24px;
+      height: 24px;
       object-fit: contain;
-      opacity: 1;
       display: block;
     }
 
-    #preview-wrap {
-      display: none;
-      margin-bottom: 1rem;
-      position: relative;
-    }
-
-    #preview-wrap img {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      border-radius: 10px;
-      display: block;
-    }
+    #preview-wrap { display: none; margin-bottom: 1rem; position: relative; }
+    #preview-wrap img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 10px; display: block; }
 
     #remove-img {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: rgba(0,0,0,0.55);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(0,0,0,0.55); color: white; border: none; border-radius: 50%;
+      width: 28px; height: 28px; cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    .fields {
-      display: grid;
-      gap: 0.75rem;
+    .fields { display: grid; gap: 1.25rem; }
+    .field label { display: block; margin-bottom: 4px; }
+
+    .field input, .field textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+      background: var(--bg); color: var(--text); outline: none; transition: border-color 0.15s;
     }
 
-    .field label {
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .field input,
-    .field textarea {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
-      background: var(--bg);
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
-    .field input:focus,
-    .field textarea:focus {
-      border-color: var(--accent);
-    }
-
-    .field textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
+    .field input:focus, .field textarea:focus { border-color: var(--accent); }
+    .field textarea { min-height: 80px; resize: vertical; }
 
     .submit-btn {
-      width: 100%;
-      padding: 13px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      margin-top: 1rem;
-      transition: opacity 0.15s, transform 0.1s;
+      width: 100%; padding: 13px; background: var(--accent); color: white; border: none;
+      border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 1rem;
+      font-weight: 500; cursor: pointer; margin-top: 1rem; transition: opacity 0.15s, transform 0.1s;
     }
 
     .submit-btn:hover { opacity: 0.9; }
     .submit-btn:active { transform: scale(0.99); }
 
     .feed-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.25rem;
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;
     }
 
     .feed-header h2 {
-      font-family: Optima, 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-      font-size: 1.4rem;
-      font-weight: 400;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.4rem; font-weight: 400;
     }
 
     .meal-count {
-      font-size: 0.8rem;
-      color: var(--muted);
-      background: var(--border);
-      padding: 3px 10px;
-      border-radius: 99px;
+      font-size: 0.8rem; color: var(--muted); background: var(--border);
+      padding: 3px 10px; border-radius: 99px;
     }
 
-    .feed {
-      display: grid;
-      gap: 1rem;
-    }
+    .feed { display: grid; gap: 1rem; }
 
     .meal-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      padding: 1.25rem 1.5rem;
       animation: fadeUp 0.3s ease;
     }
 
@@ -274,122 +183,56 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .meal-card > img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
+    .meal-top { display: flex; gap: 1rem; align-items: center; }
+
+    .meal-top img {
+      width: 70px; height: 70px; object-fit: contain; border-radius: 10px; flex-shrink: 0;
     }
 
-    .meal-card .no-photo {
-      width: 100%;
-      height: 100px;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--border);
+    .meal-top .no-photo {
+      width: 70px; height: 70px; background: var(--bg); border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: var(--border);
     }
 
-    .meal-body {
-      padding: 1rem 1.25rem;
+    .meal-info { flex: 1; min-width: 0; }
+    .meal-title { font-weight: 500; font-size: 1rem; }
+    .meal-notes { font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-top: 0.2rem; }
+
+    .meal-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border);
     }
 
-    .meal-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
+    .meal-time { font-size: 0.75rem; color: var(--muted); }
+
+    .meal-footer button {
+      font-size: 0.78rem; padding: 5px 12px; border: 1px solid var(--border);
+      border-radius: 6px; background: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; color: var(--muted); transition: all 0.15s;
     }
 
-    .meal-title {
-      font-weight: 500;
-      font-size: 1rem;
-    }
+    .meal-footer button:hover { border-color: #dc2626; color: #dc2626; }
 
-    .meal-time {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    .meal-notes {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 0.75rem;
-    }
-
-    .meal-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 0.75rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .meal-actions button {
-      font-size: 0.78rem;
-      padding: 5px 12px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: none;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--muted);
-      transition: all 0.15s;
-    }
-
-    .meal-actions .delete-btn:hover {
-      border-color: #dc2626;
-      color: #dc2626;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--muted);
-    }
-
-    .empty-state .big-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-
-    .empty-state p {
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+    .empty-state .big-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-state p { font-size: 0.9rem; line-height: 1.6; }
 
     .toast {
-      position: fixed;
-      bottom: 1.5rem;
-      left: 50%;
+      position: fixed; bottom: 1.5rem; left: 50%;
       transform: translateX(-50%) translateY(80px);
-      background: var(--text);
-      color: white;
-      padding: 10px 20px;
-      border-radius: 99px;
-      font-size: 0.875rem;
-      transition: transform 0.3s;
-      z-index: 100;
-      white-space: nowrap;
+      background: var(--text); color: white; padding: 10px 20px;
+      border-radius: 99px; font-size: 0.875rem; transition: transform 0.3s;
+      z-index: 100; white-space: nowrap;
     }
 
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
 
-    @media (max-width: 640px) {
-      .upload-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 640px) { .upload-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Chi</h1>
-  </header>
+  <header><h1>Chi</h1></header>
 
   <div class="container">
     <div class="upload-card">
@@ -401,15 +244,15 @@
           <span class="icon">
             <img src="photo.png" alt="Take photo" class="upload-icon">
           </span>
-          <p><strong>Click to take</strong> a photo</p>
+          <p><strong>Take a photo</strong></p>
         </div>
 
         <div class="drop-zone" id="upload-zone">
           <input type="file" id="file-input" accept="image/*">
           <span class="icon">
-            <img src="picture1.png" alt="Upload photo" class="upload-icon">
+            <img src="picture1.png" alt="Upload image" class="upload-icon">
           </span>
-          <p><strong>Click to upload</strong> a photo</p>
+          <p><strong>Upload a image</strong></p>
         </div>
       </div>
 
@@ -423,7 +266,7 @@
         <span class="icon">
           <img src="barcode.png" alt="Scan barcode" class="barcode-icon">
         </span>
-        <p><strong>Click to scan</strong> a barcode</p>
+        <p><strong>Scan</strong> a barcode</p>
       </div>
 
       <div id="barcode-result" style="display:none; margin:-0.25rem 0 1rem; padding:8px 12px; background:var(--accent-light); border-radius:8px; font-size:0.85rem; color:var(--accent);">
@@ -433,7 +276,7 @@
 
       <div class="fields">
         <div class="field">
-          <label>Name</label>
+          <label>Meal Name</label>
           <input type="text" id="meal-name" placeholder="e.g. Grilled salmon with rice">
         </div>
         <div class="field">
@@ -467,36 +310,26 @@
     const fileInput = document.getElementById('file-input');
     const cameraInput = document.getElementById('camera-input');
     const uploadZone = document.getElementById('upload-zone');
+    const uploadGrid = document.querySelector('.upload-grid');
     const previewWrap = document.getElementById('preview-wrap');
     const previewImg = document.getElementById('preview-img');
 
     [fileInput, cameraInput].forEach(input => {
-      input.addEventListener('change', e => {
-        const file = e.target.files[0];
-        if (file) loadImage(file);
-      });
+      input.addEventListener('change', e => { const f = e.target.files[0]; if (f) loadImage(f); });
     });
 
-    uploadZone.addEventListener('dragover', e => {
-      e.preventDefault();
-      uploadZone.classList.add('drag-over');
-    });
-
-    uploadZone.addEventListener('dragleave', () => {
-      uploadZone.classList.remove('drag-over');
-    });
-
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
     uploadZone.addEventListener('drop', e => {
-      e.preventDefault();
-      uploadZone.classList.remove('drag-over');
-      const file = e.dataTransfer.files[0];
-      if (file && file.type.startsWith('image/')) loadImage(file);
+      e.preventDefault(); uploadZone.classList.remove('drag-over');
+      const f = e.dataTransfer.files[0];
+      if (f && f.type.startsWith('image/')) loadImage(f);
     });
 
     document.getElementById('barcode-input').addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (file) {
-        document.getElementById('barcode-text').textContent = 'Barcode image captured: ' + file.name;
+      const f = e.target.files[0];
+      if (f) {
+        document.getElementById('barcode-text').textContent = 'Barcode captured: ' + f.name;
         document.getElementById('barcode-result').style.display = 'block';
         document.getElementById('barcode-zone').style.display = 'none';
       }
@@ -509,109 +342,62 @@
     }
 
     document.getElementById('remove-img').addEventListener('click', () => {
-      currentImageData = null;
-      previewWrap.style.display = 'none';
-      document.getElementById('camera-zone').style.display = 'block';
-      uploadZone.style.display = 'block';
-      fileInput.value = '';
-      cameraInput.value = '';
+      currentImageData = null; previewWrap.style.display = 'none';
+      uploadGrid.style.display = 'grid'; fileInput.value = ''; cameraInput.value = '';
     });
 
     function loadImage(file) {
-      const reader = new FileReader();
-      reader.onload = e => {
+      const r = new FileReader();
+      r.onload = e => {
         currentImageData = e.target.result;
         previewImg.src = currentImageData;
         previewWrap.style.display = 'block';
-        document.getElementById('camera-zone').style.display = 'none';
-        uploadZone.style.display = 'none';
+        uploadGrid.style.display = 'none';
       };
-      reader.readAsDataURL(file);
+      r.readAsDataURL(file);
     }
 
     function logMeal() {
       const name = document.getElementById('meal-name').value.trim();
-      if (!name && !currentImageData) {
-        showToast('Please add a photo or name');
-        return;
-      }
-
-      meals.unshift({
-        id: Date.now(),
-        name: name || 'Untitled meal',
-        notes: document.getElementById('meal-notes').value.trim(),
-        image: currentImageData,
-        date: new Date().toISOString()
-      });
-
-      saveMeals();
-      renderFeed();
-      resetForm();
-      showToast('Meal saved! 🎉');
+      if (!name && !currentImageData) { showToast('Please add a photo or name'); return; }
+      meals.unshift({ id: Date.now(), name: name || 'Untitled meal', notes: document.getElementById('meal-notes').value.trim(), image: currentImageData, date: new Date().toISOString() });
+      saveMeals(); renderFeed(); resetForm(); showToast('Meal saved! 🎉');
     }
 
-    function deleteMeal(id) {
-      meals = meals.filter(m => m.id !== id);
-      saveMeals();
-      renderFeed();
-      showToast('Meal deleted');
-    }
-
-    function saveMeals() {
-      localStorage.setItem('chi-meals', JSON.stringify(meals));
-    }
+    function deleteMeal(id) { meals = meals.filter(m => m.id !== id); saveMeals(); renderFeed(); showToast('Meal deleted'); }
+    function saveMeals() { localStorage.setItem('chi-meals', JSON.stringify(meals)); }
 
     function resetForm() {
       document.getElementById('meal-name').value = '';
       document.getElementById('meal-notes').value = '';
-      currentImageData = null;
-      previewWrap.style.display = 'none';
-      document.getElementById('camera-zone').style.display = 'block';
-      uploadZone.style.display = 'block';
-      fileInput.value = '';
-      cameraInput.value = '';
+      currentImageData = null; previewWrap.style.display = 'none';
+      uploadGrid.style.display = 'grid'; fileInput.value = ''; cameraInput.value = '';
       clearBarcode();
     }
 
     function formatDate(iso) {
-      return new Date(iso).toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      return new Date(iso).toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
     }
 
     function renderFeed() {
       const feed = document.getElementById('feed');
       document.getElementById('meal-count').textContent = meals.length + ' logged';
-
       if (!meals.length) {
-        feed.innerHTML = `
-          <div class="empty-state">
-            <div class="big-icon">🍽️</div>
-            <p>No meals logged yet.<br>Upload a photo and add your first entry above.</p>
-          </div>
-        `;
+        feed.innerHTML = '<div class="empty-state"><div class="big-icon">🍽️</div><p>No meals logged yet.<br>Upload a photo and add your first entry above.</p></div>';
         return;
       }
-
       feed.innerHTML = meals.map(m => `
         <div class="meal-card">
-          ${m.image
-            ? `<img src="${m.image}" alt="${m.name}">`
-            : `<div class="no-photo"><img src="plate.png" alt="Default plate" class="plate-icon"></div>`
-          }
-          <div class="meal-body">
-            <div class="meal-meta">
-              <span class="meal-title">${m.name}</span>
-              <span class="meal-time">${formatDate(m.date)}</span>
+          <div class="meal-top">
+            ${m.image ? `<img src="${m.image}" alt="${m.name}">` : `<div class="no-photo"><img src="plate.png" alt="Default plate" class="plate-icon"></div>`}
+            <div class="meal-info">
+              <div class="meal-title">${m.name}</div>
+              ${m.notes ? `<div class="meal-notes">${m.notes}</div>` : ''}
             </div>
-            ${m.notes ? `<p class="meal-notes">${m.notes}</p>` : ''}
-            <div class="meal-actions">
-              <button class="delete-btn" onclick="deleteMeal(${m.id})">Delete</button>
-            </div>
+          </div>
+          <div class="meal-footer">
+            <span class="meal-time">${formatDate(m.date)}</span>
+            <button onclick="deleteMeal(${m.id})">Delete</button>
           </div>
         </div>
       `).join('');
@@ -619,8 +405,7 @@
 
     function showToast(msg) {
       const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
+      t.textContent = msg; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2500);
     }
 
