@@ -1,243 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chi — Meal Journal</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --border: #e5e0d8;
+    --text: #1a1814;
+    --muted: #8a8680;
+    --accent: #c8602a;
+    --accent-light: #fdf0e8;
+  }
+
   body {
-    font-family: Arial, sans-serif;
-    background: #f7f5f0;
-    color: #1a1814;
-    max-width: 700px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  header h1 {
+    font-family: Optima, 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .container {
+    max-width: 680px;
     margin: 0 auto;
-    padding: 24px;
+    padding: 2rem 1.5rem;
   }
 
-  h1 { color: #c8602a; margin-bottom: 4px; }
-  .sub { color: #777; margin-top: 0; }
+  .upload-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
 
-  .card {
-    background: #fff;
-    border: 1px solid #ddd;
+  .upload-card h2 {
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.75rem;
+  }
+
+  .drop-zone {
+    border: 1.5px dashed var(--border);
     border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-
-  label {
-    display: block;
-    font-size: 14px;
-    margin: 12px 0 6px;
-    color: #666;
-  }
-
-  input, textarea, button {
-    font: inherit;
-  }
-
-  input[type="text"], textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-
-  textarea {
-    min-height: 90px;
-    resize: vertical;
-  }
-
-  input[type="file"] {
-    margin-top: 8px;
-  }
-
-  .row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .row input[type="text"] {
-    flex: 1;
-  }
-
-  button {
-    background: #c8602a;
-    color: white;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  button.secondary {
-    background: #eee;
-    color: #333;
-  }
-
-  img.preview {
-    width: 100%;
-    max-height: 220px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-top: 12px;
-  }
-
-  .meal {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background: #fff;
-    overflow: hidden;
-    margin-bottom: 14px;
-  }
-
-  .meal img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-  }
-
-  .meal-body {
-    padding: 14px;
-  }
-
-  .meal-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .muted {
-    color: #777;
-    font-size: 14px;
-  }
-
-  .empty {
-    color: #777;
+    padding: 2.5rem 1rem;
     text-align: center;
-    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--bg);
+    position: relative;
+    margin-bottom: 1rem;
   }
+
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .drop-zone input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+
+  .drop-zone .icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+  .drop-zone p { font-size: 1.05rem; color: var(--muted); }
+  .drop-zone strong { color: var(--accent); font-weight: 500; font-size: 1.05rem; }
+
+  .barcode-zone {
+    border: 1.5px dashed var(--border); border-radius: 12px; padding: 1.5rem 1rem;
+    text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg);
+  }
+  .barcode-zone:hover { border-color: var(--accent); background: var(--accent-light); }
+  .barcode-zone .icon { font-size: 1.8rem; margin-bottom: 0.4rem; display: block; }
+  .barcode-zone p { font-size: 1.05rem; color: var(--muted); }
+  .barcode-zone strong { color: var(--accent); font-weight: 500; font-size: 1.05rem; }
+
+  #preview-wrap { display: none; margin-bottom: 1rem; position: relative; }
+  #preview-wrap img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 10px; display: block; }
+
+  #remove-img {
+    position: absolute; top: 8px; right: 8px;
+    background: rgba(0,0,0,0.55); color: white; border: none; border-radius: 50%;
+    width: 28px; height: 28px; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .fields { display: grid; gap: 0.75rem; }
+
+  .field label {
+    display: block; font-size: 0.95rem; color: var(--accent);
+    margin-bottom: 4px; font-weight: 500;
+  }
+
+  .field input, .field textarea {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    background: var(--bg); color: var(--text); outline: none; transition: border-color 0.15s;
+  }
+
+  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field textarea { min-height: 80px; resize: vertical; }
+
+  .submit-btn {
+    width: 100%; padding: 13px; background: var(--accent); color: white; border: none;
+    border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 1rem;
+    font-weight: 500; cursor: pointer; margin-top: 1rem; transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:active { transform: scale(0.99); }
+
+  .feed-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;
+  }
+
+  .feed-header h2 {
+    font-family: Optima, 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-size: 1.4rem; font-weight: 400;
+  }
+
+  .meal-count {
+    font-size: 0.8rem; color: var(--muted); background: var(--border);
+    padding: 3px 10px; border-radius: 99px;
+  }
+
+  .feed { display: grid; gap: 1rem; }
+
+  .meal-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; display: flex; flex-direction: column; animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .meal-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+
+  .meal-card .no-photo {
+    width: 100%; height: 100px; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; color: var(--border);
+  }
+
+  .meal-body { padding: 1rem 1.25rem; }
+
+  .meal-meta {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;
+  }
+
+  .meal-title { font-weight: 500; font-size: 1rem; }
+  .meal-time { font-size: 0.75rem; color: var(--muted); }
+  .meal-notes { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.75rem; }
+
+  .meal-actions {
+    display: flex; gap: 0.5rem; margin-top: 0.75rem;
+    padding-top: 0.75rem; border-top: 1px solid var(--border);
+  }
+
+  .meal-actions button {
+    font-size: 0.78rem; padding: 5px 12px; border: 1px solid var(--border);
+    border-radius: 6px; background: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; color: var(--muted); transition: all 0.15s;
+  }
+
+  .meal-actions .delete-btn:hover { border-color: #dc2626; color: #dc2626; }
+
+  .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+  .empty-state .big-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .empty-state p { font-size: 0.9rem; line-height: 1.6; }
+
+  .toast {
+    position: fixed; bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text); color: white; padding: 10px 20px;
+    border-radius: 99px; font-size: 0.875rem; transition: transform 0.3s;
+    z-index: 100; white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
+
+<header>
   <h1>Chi</h1>
-  <p class="sub">your meal journal</p>
+</header>
 
-  <div class="card">
-    <label>Photo</label>
-    <input type="file" id="photo" accept="image/*" />
-    <img id="preview" class="preview" style="display:none" alt="Preview" />
+<div class="container">
+  <div class="upload-card">
+    <h2>Log a meal</h2>
 
-    <label>Meal name</label>
-    <input type="text" id="mealName" placeholder="e.g. Chicken salad" />
-
-    <label>Description</label>
-    <textarea id="description" placeholder="Add a short description"></textarea>
-
-    <label>UPC barcode</label>
-    <div class="row">
-      <input type="text" id="barcode" placeholder="Scan or type barcode" />
-      <button type="button" class="secondary" id="scanBtn">Scan</button>
+    <div class="drop-zone" id="drop-zone">
+      <input type="file" id="file-input" accept="image/*">
+      <span class="icon"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABiAI4DASIAAhEBAxEB/8QAHQAAAgMAAwEBAAAAAAAAAAAAAAgGBwkBAgUDBP/EAFIQAAECBAIFAwsEBwcFAAAAAAECAwAEBQYHEQgSEyExQVFhCRQWIjI3cXN2lbQVGDQ4QlJTVmKBkZKxs9LTIyRUcpOUoRczVVeCwtEZNUejwv/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwBmMCe8hYfk3TvRm4mcQzAnvIWH5N070ZuJnAEEEEAQQQQBBBC9496UVtYd1f1AoMki5aw0spnEof2bEtlxQVgHNefuQN3Kc90AwkEJSdOGpj/x7Keclflxx6+Kpf5eynnJX5cA68EJR6+Kpf5eynnJX5cW5o+6TNs4mT3qFVpZFu19aspaXcf12pocgQsgdv8AJI38me8AL7ggggCCCCAIIIICGYE95Cw/JunejNxM4hmBPeQsPybp3ozcTOAI6bZn4Vv6whVuqH3vX6BblvW1R59+Rlqwp9c6tlZQp1DezCWyRv1SVkkcuQhHOv579sf/AIhgNjNsz8K39YQbZn4Vv6wjHPr+e/a3/wCIYOv579rf/iGA0z0gaTi3dVKVb+HdWt6hyD6MpufmJ51E04DxQgIbIbTzqzzPRyqyNDTFBxwkV+0VrO8/rr5J/wDTEP0dMGruxcq6nUz01TLdllZTdSUScz8G0M+2X/RI3nkBd+SksJdH60du+/KUdpQ1VzUysuzk4oDhnvWs8uqkao5hAKkdC7FMn/vVpfzb/wCTHHrLcUv8atP+bf8AyYvZGkLeV3zK0YU4Q1mtyYOSajUViXZUej3OX+vPoj6C7tK8O7Y4YWgWc/7kTw18v3tvlAUL6y3FL/GrT/m3/wAmBvQ2xRYeStFw2k06ghSSJ18FJ5D/AHMXsNIy5rTnES+LWE9bt2WUcjUZI9csA9PAZeBRPRE3rlvYU4/2iJ+WmZWpp1ShmpSK9nNyqjyE90MuOosZdEB3wIkcVbfooomJVToFZbl0BMpUZSccXMEDIBDoW2kL/fzz58+MWbtmfhW/rCMx9ILCO8sI64luenJifok0siRqTalBLmW/UWM+0WBycvEE74uvQqwtsrEDDap1e7aW9Up1mqKYbcM483qthpsgZIWBxUfpgHO2zPwrf1hHKXW1HJLiCeYKip/W5YQfFd3zlM/mRRGmZh5a2F1n29X7ElJui1NdWDZmWZ98rCQ0tQyKlnI5pBzG+AdGCIDo8XPUrywXtm46wtLlQmpQiYcAy2i0LUgqy5zq5npMT6AhmBPeQsPybp3ozcTOIZgT3kLD8m6d6M3EzgEt6pf7Nsfxc79rMJzDjdUv9m2P4ud+1mE5gCJ3gVh1UMUMRpC2JMral1HbT0ylOfW8ukjXX4d4A5yoRBIfvqetktUfDKdvKYYyna5MltpahvEu0SkZc2a9fPn1UwFhYm3ja2AWGEhTqLSm1zBAk6HSGe6mHffKy3kZnNSuJKgOKhETwqwNnbgqqcRccHDX7mmgHGaW+QqVpyM80o1B2qiPe9yN/dHfHm4RS4xi0h7ixPqaVv0C1nvUy3WXN7e1T3TwHDPivwuJ96IuLHO+G8OcK63dZCVzEqzqSiFcFvrIQ2DzjWIJ6AYDOGHtwvqTjfU9qs464RsqVUpdBzy3KccAA+vlCJ8sPlU7dqNq9T3epi5VxU45S0zT7aRmUJemEuEn91C9/NkYDzbMqOvizhC5r9oMM1K+fZOZ/wCyLM0IpxE3o40BKTn1u9NNHoPXC1f/AFC1W1fNuSl+4bzS67JNsU7D96QmnVOdqxMlmaAaUeRWZQMvlDni++p/ma/sAQH2VttiqzOwURlroyRmRzjW1h80B6WnJSkT2AU9Usv1ijz0tOsKHFKtoGz/AEcMelj22m7tFKtzjiBrTNCaqIB5FJCHh/tj8OnBUm5HR7q0mpQ21TmpaTYTyqUXUrIH+ltUehjavsU0T6zKzChrytutyG/dmtSEMj+qoDMlfAR0juvgI6QGnuh57W+0PEPffuRbcVJoee1vtDxD337kW3AQzAnvIWH5N070ZuJnEMwJ7yFh+TdO9GbiZwCW9Uv9m2P4ud+1mE5hxuqX+zbH8XO/azCcwBGg/U/ryZr2ED1rvPhU7QJlSNmo7+t3SVoPg1toOjIRnxFk6OWJszhXiXJ179I5THv1apsIAJcYURmRn7pJAUPBlwJgG4wAmjhVjndeDVUcU1Tqq+qr24te5K0qGamxznVGXhaVzwx9TkpSpU6Zp0+wiYlJppTL7SxmlaFAhST0EExVGNuH1MxkselXFadXaYrsgBP2/V2F9qTuUEFQ9yogdKVAHnB8rBLHNupz3YFic2m2r7kVbB1uZAaZniNwW2ruQpXHVByPFOYOQCgMMsC7amtLm4LKnn1zNDtweqDcuTmZhBLSm2lnmG1SFc+qeGcPbNSktNSLsjMy7Tsq82WnGVpBQtBGRSRwyI3ZQr+ELifX54kjPeqmlI+brX/iGmgM674wEalNKeRwxps4WqVV1CdlnVb1sSpC1LTv4qSG1gc+Sc+WNAraolMtu35Gg0aVTK0+QYSxLtJ9ylI5+U8pPKSTC63zNI/6g1kIOQ2dBWjPnKm5v/kRJMbsa5xituYZ4UyblevqZJYcWynNmm8M1rUe11hny9qn3R3ZEPAxVeRi9pKW1hzIJ65oNoO+qledSrNBeGWq0Tzjcgjj26/emPx9UQvJqmYdUyzGHB11WZoPvJB7lhnfv8KyjL90xY+Etk2/gRhhUapcNUbdnlIM9X6s5mS85vOqM95AJISOKiScs1ZQgGO2Ic9idiLUbpm0raYcIakpdSs9hLp7hPh4k9KjAQM7zHEEEBp7oee1vtDxD337kW3FSaHntb7Q8Q99+5FtwEMwJ7yFh+TdO9GbiZxDMCe8hYfk3TvRm4mcAovVIbcqs9Q7WuOUlXX5CnLmGZtaEEhkubMoKuYHUUM+fIcsJFlGyjzTbzK2Xm0ONrBStC05pUDxBB4iPE7C7O+KdB83Nfhg7C7O+KdB83NfhgMhsoMo157C7O+KdB83Nfhg7C7O+KdB83NfhgM/dGLSFq2Fk2miVlD1TtR5ea5dKs3JRRO9xrPdzko4HjmDxcmuW9hHpC2izPhyTq6A3kxPSjgbnJMnfqk90k/IWCOiJz2F2d8U6D5ua/DH66Vb1ApUwqYpdDpkg8pOqXJaUQ2ojmJSAcoBItF2XZtbTOq1tNVGan2mkT1ObmJhWbjoa3jWPPk1/SLyq0/pW+qM3LU2iWJ1oJhYl5p1atctax1SRtOOrlyR97N0cJC28aDic1ds9MTip2Zm1yqpVKUK2wWFJ1s88hr8eiL3gEDlp++pHTctVOIlUp85XmpqXlnVySQllCHWzqtjtRyOc3LxMN5ctSwxwil6tdVVXTaLMVR5UxNO91NTrnMkb1L6EjcOjeYhdz6OlOrmOCMVF3TOMTqJ+XnEyiZVJR+hCAE62tnvCOPTFv1O27dqkz11U6DSp6YyCdrMSjbi8hyZqBOUBnRpKY91rFmoinyqF0u2JZwql5LXzU+oZ5OvEbirLgkbk58p3ml1ZEcR9Ma7dhVm/FKgebmfwwdhVm/FKgebmfwwGQ2R6Ppjuy0486hppJWtZCUpSMySeAAjXbsKs34pUDzcz+GPtI2rbEhNImpG3KPKzDZzQ6zJNoWk9BCcxARHRnoFTtjAq1KNWJdUtPMyZW8yrumy4tSwlQ5CAoZjkOcWNBBAQzAnvIWH5N070ZuJnBBAEEEEAQQQQBBBBAEEEEAQQQQBBBBAEEEEAQQQQH/9k=" style="width:48px;height:auto;"></span>
+      <p><strong>Click to upload</strong> a photo here</p>
     </div>
 
-    <div style="margin-top:14px;">
-      <button type="button" id="saveBtn">Save meal</button>
+    <div id="preview-wrap">
+      <img id="preview-img" alt="meal photo">
+      <button id="remove-img" title="Remove photo">✕</button>
     </div>
+
+    <div class="fields">
+      <div class="field">
+        <div class="barcode-zone" id="barcode-zone" onclick="document.getElementById('barcode-input').click()">
+          <input type="file" id="barcode-input" accept="image/*" capture="environment" style="display:none">
+          <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="4" x2="2" y2="20"/><line x1="5" y1="4" x2="5" y2="20"/><line x1="7" y1="4" x2="7" y2="20"/><line x1="10" y1="4" x2="10" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="14" y1="4" x2="14" y2="20"/><line x1="17" y1="4" x2="17" y2="20"/><line x1="19" y1="4" x2="19" y2="20"/><line x1="22" y1="4" x2="22" y2="20"/></svg></span>
+          <p><strong>Click to scan</strong> a barcode</p>
+        </div>
+        <div id="barcode-result" style="display:none; margin-top:0.5rem; padding:8px 12px; background:var(--accent-light); border-radius:8px; font-size:0.85rem; color:var(--accent); display:none;">
+          <span id="barcode-text"></span>
+          <button onclick="clearBarcode()" style="float:right; background:none; border:none; cursor:pointer; color:var(--muted); font-size:0.85rem;">✕</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Meal Name</label>
+        <input type="text" id="meal-name" placeholder="e.g. Grilled salmon with rice">
+      </div>
+      <div class="field">
+        <label>Ingredients</label>
+        <textarea id="meal-notes" placeholder="List your ingredients here..."></textarea>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="logMeal()">Save meal →</button>
   </div>
 
-  <h2>Your meals</h2>
-  <div id="mealList"></div>
+  <div class="feed-header">
+    <h2>Your meals</h2>
+    <span class="meal-count" id="meal-count">0 logged</span>
+  </div>
+
+  <div class="feed" id="feed">
+    <div class="empty-state">
+      <div class="big-icon">🍽️</div>
+      <p>No meals logged yet.<br>Upload a photo and add your first entry above.</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
   let meals = JSON.parse(localStorage.getItem('chi-meals') || '[]');
-  let imageData = '';
+  let currentImageData = null;
 
-  const photo = document.getElementById('photo');
-  const preview = document.getElementById('preview');
-  const mealName = document.getElementById('mealName');
-  const description = document.getElementById('description');
-  const barcode = document.getElementById('barcode');
-  const mealList = document.getElementById('mealList');
+  const fileInput = document.getElementById('file-input');
+  const dropZone = document.getElementById('drop-zone');
+  const previewWrap = document.getElementById('preview-wrap');
+  const previewImg = document.getElementById('preview-img');
 
-  photo.addEventListener('change', () => {
-    const file = photo.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = e => {
-      imageData = e.target.result;
-      preview.src = imageData;
-      preview.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
+  fileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) loadImage(file);
   });
 
-  document.getElementById('scanBtn').addEventListener('click', async () => {
-    if ('BarcodeDetector' in window) {
-      alert('Barcode scan can be connected here later. For now, type the UPC code manually.');
-    } else {
-      alert('Barcode scanning is not supported here. Please type the UPC code.');
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) loadImage(file);
+  });
+
+  document.getElementById('barcode-input').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) {
+      document.getElementById('barcode-text').textContent = 'Barcode image captured: ' + file.name;
+      document.getElementById('barcode-result').style.display = 'block';
+      document.getElementById('barcode-zone').style.display = 'none';
     }
   });
 
-  document.getElementById('saveBtn').addEventListener('click', () => {
-    const meal = {
-      id: Date.now(),
-      name: mealName.value.trim() || 'Untitled meal',
-      description: description.value.trim(),
-      barcode: barcode.value.trim(),
-      image: imageData,
-      date: new Date().toLocaleString()
-    };
+  function clearBarcode() {
+    document.getElementById('barcode-input').value = '';
+    document.getElementById('barcode-result').style.display = 'none';
+    document.getElementById('barcode-zone').style.display = 'block';
+  }
 
-    meals.unshift(meal);
-    localStorage.setItem('chi-meals', JSON.stringify(meals));
-    resetForm();
-    renderMeals();
+  document.getElementById('remove-img').addEventListener('click', () => {
+    currentImageData = null; previewWrap.style.display = 'none';
+    dropZone.style.display = 'block'; fileInput.value = '';
   });
 
-  function resetForm() {
-    photo.value = '';
-    mealName.value = '';
-    description.value = '';
-    barcode.value = '';
-    imageData = '';
-    preview.src = '';
-    preview.style.display = 'none';
+  function loadImage(file) {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      currentImageData = ev.target.result;
+      previewImg.src = currentImageData;
+      previewWrap.style.display = 'block';
+      dropZone.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function logMeal() {
+    const name = document.getElementById('meal-name').value.trim();
+    if (!name && !currentImageData) { showToast('Please add a photo or meal name'); return; }
+
+    meals.unshift({
+      id: Date.now(),
+      name: name || 'Untitled meal',
+      notes: document.getElementById('meal-notes').value.trim(),
+      image: currentImageData,
+      date: new Date().toISOString()
+    });
+    saveMeals(); renderFeed(); resetForm(); showToast('Meal saved! 🎉');
   }
 
   function deleteMeal(id) {
-    meals = meals.filter(meal => meal.id !== id);
-    localStorage.setItem('chi-meals', JSON.stringify(meals));
-    renderMeals();
+    meals = meals.filter(m => m.id !== id);
+    saveMeals(); renderFeed(); showToast('Meal deleted');
   }
 
-  function renderMeals() {
+  function saveMeals() { localStorage.setItem('chi-meals', JSON.stringify(meals)); }
+
+  function resetForm() {
+    document.getElementById('meal-name').value = '';
+    document.getElementById('meal-notes').value = '';
+    currentImageData = null; previewWrap.style.display = 'none';
+    dropZone.style.display = 'block'; fileInput.value = '';
+    clearBarcode();
+  }
+
+  function formatDate(iso) {
+    return new Date(iso).toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+
+  function renderFeed() {
+    const feed = document.getElementById('feed');
+    document.getElementById('meal-count').textContent = meals.length + ' logged';
+
     if (!meals.length) {
-      mealList.innerHTML = '<div class="empty">No meals yet.</div>';
+      feed.innerHTML = `<div class="empty-state"><div class="big-icon">🍽️</div><p>No meals logged yet.<br>Upload a photo and add your first entry above.</p></div>`;
       return;
     }
 
-    mealList.innerHTML = meals.map(meal => `
-      <div class="meal">
-        ${meal.image ? `<img src="${meal.image}" alt="${meal.name}">` : ''}
+    feed.innerHTML = meals.map(m => `
+      <div class="meal-card">
+        ${m.image ? `<img src="${m.image}" alt="${m.name}">` : `<div class="no-photo">🍴</div>`}
         <div class="meal-body">
-          <div class="meal-top">
-            <strong>${meal.name}</strong>
-            <span class="muted">${meal.date}</span>
+          <div class="meal-meta">
+            <span class="meal-title">${m.name}</span>
+            <span class="meal-time">${formatDate(m.date)}</span>
           </div>
-          ${meal.description ? `<p>${meal.description}</p>` : ''}
-          ${meal.barcode ? `<p class="muted">UPC: ${meal.barcode}</p>` : ''}
-          <button class="secondary" onclick="deleteMeal(${meal.id})">Delete</button>
+          ${m.notes ? `<p class="meal-notes">${m.notes}</p>` : ''}
+          <div class="meal-actions">
+            <button class="delete-btn" onclick="deleteMeal(${m.id})">Delete</button>
+          </div>
         </div>
       </div>
     `).join('');
   }
 
-  renderMeals();
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  renderFeed();
 </script>
 </body>
 </html>
